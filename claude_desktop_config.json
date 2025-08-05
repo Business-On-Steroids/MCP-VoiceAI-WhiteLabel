@@ -1,0 +1,11 @@
+{
+    "comment": "Add this to your Claude Desktop configuration",
+    "mcpServers": {
+      "vavicky": {
+        "command": "node",
+        "args": ["path/to/your/vavicky-mcp-server/server.js"],
+        "env": {
+          "VAVICKY_API_KEY": "your-vavicky-api-key-here"
+        }
+      }
+    }
