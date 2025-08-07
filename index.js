@@ -32,7 +32,7 @@ class VavickyMCPServer {
     this.baseUrl = 'https://backend.vavicky.com/vavicky/api'; 
     this.setupToolHandlers();
   }
-  setupToolHandlers() {
+ setupToolHandlers() {
     // List all available tools
     this.server.setRequestHandler(ListToolsRequestSchema, async () => {
       return {
@@ -75,7 +75,6 @@ class VavickyMCPServer {
               required: ['smtp_email', 'smtp_password', 'smtp_host']
             }
           },
-
           // API Token Management
           {
             name: 'update_openai_token',
@@ -295,7 +294,6 @@ class VavickyMCPServer {
               required: []
             }
           },
-
           // Chat with Assistant
           {
             name: 'chat_with_assistant',
@@ -311,7 +309,6 @@ class VavickyMCPServer {
               required: ['assistant_id', 'message', 'thread_id']
             }
           },
-
           // Twilio Operations
           {
             name: 'connect_twilio',
@@ -395,7 +392,6 @@ class VavickyMCPServer {
               required: []
             }
           },
-
           // Call Management
           {
             name: 'make_call',
@@ -442,7 +438,6 @@ class VavickyMCPServer {
               required: ['call_id']
             }
           },
-
           // SMS Operations
           {
             name: 'send_sms',
@@ -461,18 +456,15 @@ class VavickyMCPServer {
         ]
       };
     });
-
     // Handle tool execution
     this.server.setRequestHandler(CallToolRequestSchema, async (request) => {
       const { name, arguments: args } = request.params;
-
       if (!this.apiKey) {
         throw new McpError(
           ErrorCode.InvalidRequest,
           'VAVICKY_API_KEY environment variable is required'
         );
       }
-
       try {
         const result = await this.executeTool(name, args || {});
         return {
@@ -491,21 +483,17 @@ class VavickyMCPServer {
       }
     });
   }
-
   async executeTool(toolName, args) {
     const headers = {
       'Authorization': `Bearer ${this.apiKey}`,
       'Content-Type': 'application/json'
     };
-
     let url, method = 'GET', body = null;
-
     switch (toolName) {
       // User Management
       case 'get_user':
         url = `${this.baseUrl}/user`;
         break;
-
       case 'update_white_label':
         url = `${this.baseUrl}/user`;
         method = 'PATCH';
@@ -516,7 +504,6 @@ class VavickyMCPServer {
           whitelabel_color: args.whitelabel_color
         };
         break;
-
       case 'update_smtp':
         url = `${this.baseUrl}/user/smtp`;
         method = 'PATCH';
@@ -527,38 +514,32 @@ class VavickyMCPServer {
           smtp_port: args.smtp_port
         };
         break;
-
       // Token Management
       case 'update_openai_token':
         url = `${this.baseUrl}/openai/oauth`;
         method = 'POST';
         body = { openai_token: args.openai_token };
         break;
-
       case 'update_elevenlabs_token':
         url = `${this.baseUrl}/elevenlabs/oauth`;
         method = 'POST';
         body = { elevenlabs_token: args.elevenlabs_token };
         break;
-
       case 'update_deepseek_token':
         url = `${this.baseUrl}/deepseek/oauth`;
         method = 'POST';
         body = { deepseek_token: args.deepseek_token };
         break;
-
       case 'update_gemini_token':
         url = `${this.baseUrl}/gemini/oauth`;
         method = 'POST';
         body = { gemini_token: args.gemini_token };
         break;
-
       case 'update_openrouter_token':
         url = `${this.baseUrl}/openrouter/oauth`;
         method = 'POST';
         body = { openrouter_token: args.openrouter_token };
         break;
-
       // Assistant Management
       case 'get_assistants':
         url = `${this.baseUrl}/assistants`;
@@ -738,7 +719,6 @@ class VavickyMCPServer {
 
     return await response.json();
   }
-
   filterEmptyValues(obj) {
     const cleaned = {};
     for (const [key, value] of Object.entries(obj)) {
@@ -748,7 +728,6 @@ class VavickyMCPServer {
     }
     return cleaned;
   }
-
   async run() {
     const transport = new StdioServerTransport();
     await this.server.connect(transport);
@@ -758,3 +737,5 @@ class VavickyMCPServer {
 
 const server = new VavickyMCPServer();
 server.run().catch(console.error);
+
+export { VavickyMCPServer };
