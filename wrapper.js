@@ -8,7 +8,7 @@ import { VavickyMCPServer } from './index.js'; // Make sure index.js exports you
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 443;
+const port = process.env.PORT || 4000;
 
 // Load SSL certs
 const key = fs.readFileSync('./certs/key.pem');
