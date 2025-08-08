@@ -42,6 +42,6 @@ app.post('/call-tool', async (req, res) => {
 });
 
 // Create HTTPS server
-https.createServer({ key, cert }, app).listen(port, () => {
+app.listen(port, () => {
   console.log(`🔒 Vavicky MCP HTTPS server running on port ${port}`);
 });
