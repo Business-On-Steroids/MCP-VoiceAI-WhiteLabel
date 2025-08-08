@@ -3,7 +3,7 @@
 ## Update the MCP Server
 This command will update the code on AWS and restart the MCP Server and it opens the logs.
 ```
-cd MCP-VoiceAI-WhiteLabel/ && git pull && pm2 restart 4 && pm2 logs 4
+cd MCP-VoiceAI-WhiteLabel/ && git pull && pm2 restart 6 && pm2 logs 6
 ```
 
 # Exit the logs
