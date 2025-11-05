@@ -16,6 +16,10 @@ Press CTRL+C
 
 Complete MCP server implementation for the VoiceAI VAVicky AiAgency platform.
 
+<a href="https://glama.ai/mcp/servers/@Business-On-Steroids/MCP-VoiceAI-WhiteLabel">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@Business-On-Steroids/MCP-VoiceAI-WhiteLabel/badge" alt="VoiceAI-MCP-VAVicky MCP server" />
+</a>
+
 ## Features
 
 ### User Management
@@ -198,5 +202,3 @@ For MCP-related issues, refer to the Anthropic MCP documentation.
 ## License
 
 This MCP server follows the same licensing as the original Vavicky n8n node implementation.
-
-
