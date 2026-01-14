@@ -55,7 +55,79 @@ app.all("/mcp", async (req, res) => {
         transports.delete(newSessionId);
       });
     }
-    console.log(req.body);
+    // console.log(req.body);
+    /*
+
+4|mcp  |   method: 'initialize',
+4|mcp  |   params: {
+4|mcp  |     protocolVersion: '2025-03-26',
+4|mcp  |     capabilities: {},
+4|mcp  |     clientInfo: { name: 'mcp', version: '0.1.0' }
+4|mcp  |   },
+4|mcp  |   jsonrpc: '2.0',
+4|mcp  |   id: 0
+4|mcp  | }
+4|mcp  | { method: 'notifications/initialized', jsonrpc: '2.0' }
+4|mcp  | { method: 'tools/list', jsonrpc: '2.0', id: 1 }
+4|mcp  | {
+4|mcp  |   method: 'initialize',
+4|mcp  |   params: {
+4|mcp  |     protocolVersion: '2025-03-26',
+4|mcp  |     capabilities: {},
+4|mcp  |     clientInfo: { name: 'mcp', version: '0.1.0' }
+4|mcp  |   },
+4|mcp  |   jsonrpc: '2.0',
+4|mcp  |   id: 0
+4|mcp  | }
+4|mcp  | { method: 'notifications/initialized', jsonrpc: '2.0' }
+4|mcp  | { method: 'tools/list', jsonrpc: '2.0', id: 1 }
+4|mcp  | {
+4|mcp  |   method: 'initialize',
+4|mcp  |   params: {
+4|mcp  |     protocolVersion: '2025-03-26',
+4|mcp  |     capabilities: {},
+4|mcp  |     clientInfo: { name: 'mcp', version: '0.1.0' }
+4|mcp  |   },
+4|mcp  |   jsonrpc: '2.0',
+4|mcp  |   id: 0
+4|mcp  | }
+4|mcp  | { method: 'notifications/initialized', jsonrpc: '2.0' }
+4|mcp  | { method: 'tools/list', jsonrpc: '2.0', id: 1 }
+4|mcp  | {
+4|mcp  |   method: 'initialize',
+4|mcp  |   params: {
+4|mcp  |     protocolVersion: '2025-03-26',
+4|mcp  |     capabilities: {},
+4|mcp  |     clientInfo: { name: 'mcp', version: '0.1.0' }
+4|mcp  |   },
+4|mcp  |   jsonrpc: '2.0',
+4|mcp  |   id: 0
+4|mcp  | }
+4|mcp  | { method: 'notifications/initialized', jsonrpc: '2.0' }
+4|mcp  | { method: 'tools/list', jsonrpc: '2.0', id: 1 }
+4|mcp  | {
+4|mcp  |   method: 'initialize',
+4|mcp  |   params: {
+4|mcp  |     protocolVersion: '2025-03-26',
+4|mcp  |     capabilities: {},
+4|mcp  |     clientInfo: { name: 'mcp', version: '0.1.0' }
+4|mcp  |   },
+4|mcp  |   jsonrpc: '2.0',
+4|mcp  |   id: 0
+4|mcp  | }
+4|mcp  | { method: 'notifications/initialized', jsonrpc: '2.0' }
+4|mcp  | { method: 'tools/list', jsonrpc: '2.0', id: 1 }
+4|mcp  | {
+4|mcp  |   method: 'initialize',
+4|mcp  |   params: {
+4|mcp  |     protocolVersion: '2025-03-26',
+4|mcp  |     capabilities: {},
+4|mcp  |     clientInfo: { name: 'mcp', version: '0.1.0' }
+4|mcp  |   },
+4|mcp  |   jsonrpc: '2.0',
+4|mcp  |   id: 0
+4|mcp  | }
+    */
     await transport.handleRequest(req, res, req.body);
   }
 
