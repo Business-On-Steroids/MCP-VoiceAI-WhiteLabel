@@ -4,11 +4,11 @@
   "description": "MCP server for VoiceAI VAVicky AiAgency platform",
   "type": "module",
   "bin": {
-    "vavicky-mcp-server": "./index.js"
+    "vavicky-mcp-server": "./app.js"
   },
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node app.js"
   },
   "keywords": [],
   "author": "",
