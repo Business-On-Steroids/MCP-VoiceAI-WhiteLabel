@@ -5,8 +5,9 @@ async function runClient() {
     // 1. Initialize the Transport with the server's public URL
     // Public MCP 
     // const transport = new StreamableHTTPClientTransport("https://knowledge-mcp.global.api.aws", {});
-    const transport = new StreamableHTTPClientTransport("http://localhost:3000/mcp", {});
-
+    // const transport = new StreamableHTTPClientTransport("http://107.21.194.22:4000/mcp", {});
+    const transport = new StreamableHTTPClientTransport("https://backend.vavicky.com/mcp", {});
+    
     // 2. Initialize the MCP Client
     const client = new Client({
         name: "my-node-client",

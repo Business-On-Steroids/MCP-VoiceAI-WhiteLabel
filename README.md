@@ -1,5 +1,10 @@
 # How to update AWS MCP server
 
+## Public Streamable HTTP URL MCP Server
+```
+https://backend.vavicky.com/mcp
+```
+
 ## Update the MCP Server
 This command will update the code on AWS and restart the MCP Server and it opens the logs.
 ```
