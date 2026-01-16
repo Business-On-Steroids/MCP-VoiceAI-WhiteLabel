@@ -1,5 +1,7 @@
 import express from "express";
 import cors from "cors";
+import dotenv from 'dotenv';
+import { auth } from './middlewares/authorization.js';
 // import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
@@ -7,6 +9,7 @@ import * as Users from './tools/users.js';
 import * as Twilio from './tools/assistants.js';
 import * as Assistant from './tools/twilio.js';
 
+dotenv.config();
 
 
 const app = express();
@@ -16,8 +19,8 @@ app.use(express.json());
 // 1. Initialize your MCP Server
 const server = new McpServer({
   name: "VA Vicky Public MCP Server",
-  title: "VA Vicky  Public MCP Server",
-  description: "VA Vicky  Public MCP Server",
+  title: "VA Vicky Public MCP Server",
+  description: "VA Vicky Public MCP Server",
   websiteUrl: "https://vavicky.com",
   version: "1.0.0"
 });
@@ -33,8 +36,10 @@ for (const t of tools) server.registerTool(t.name, t.config, t.callback)
 // 3. Store active transports/sessions
 const transports = new Map();
 
+
+
 // 4. Single MCP Endpoint
-app.all("/mcp", async (req, res) => {
+app.all("/mcp", auth, async (req, res) => {
   const sessionId = req.headers["mcp-session-id"];
 
   // Handle New Session / Message
@@ -55,79 +60,7 @@ app.all("/mcp", async (req, res) => {
         transports.delete(newSessionId);
       });
     }
-    // console.log(req.body);
-    /*
 
-4|mcp  |   method: 'initialize',
-4|mcp  |   params: {
-4|mcp  |     protocolVersion: '2025-03-26',
-4|mcp  |     capabilities: {},
-4|mcp  |     clientInfo: { name: 'mcp', version: '0.1.0' }
-4|mcp  |   },
-4|mcp  |   jsonrpc: '2.0',
-4|mcp  |   id: 0
-4|mcp  | }
-4|mcp  | { method: 'notifications/initialized', jsonrpc: '2.0' }
-4|mcp  | { method: 'tools/list', jsonrpc: '2.0', id: 1 }
-4|mcp  | {
-4|mcp  |   method: 'initialize',
-4|mcp  |   params: {
-4|mcp  |     protocolVersion: '2025-03-26',
-4|mcp  |     capabilities: {},
-4|mcp  |     clientInfo: { name: 'mcp', version: '0.1.0' }
-4|mcp  |   },
-4|mcp  |   jsonrpc: '2.0',
-4|mcp  |   id: 0
-4|mcp  | }
-4|mcp  | { method: 'notifications/initialized', jsonrpc: '2.0' }
-4|mcp  | { method: 'tools/list', jsonrpc: '2.0', id: 1 }
-4|mcp  | {
-4|mcp  |   method: 'initialize',
-4|mcp  |   params: {
-4|mcp  |     protocolVersion: '2025-03-26',
-4|mcp  |     capabilities: {},
-4|mcp  |     clientInfo: { name: 'mcp', version: '0.1.0' }
-4|mcp  |   },
-4|mcp  |   jsonrpc: '2.0',
-4|mcp  |   id: 0
-4|mcp  | }
-4|mcp  | { method: 'notifications/initialized', jsonrpc: '2.0' }
-4|mcp  | { method: 'tools/list', jsonrpc: '2.0', id: 1 }
-4|mcp  | {
-4|mcp  |   method: 'initialize',
-4|mcp  |   params: {
-4|mcp  |     protocolVersion: '2025-03-26',
-4|mcp  |     capabilities: {},
-4|mcp  |     clientInfo: { name: 'mcp', version: '0.1.0' }
-4|mcp  |   },
-4|mcp  |   jsonrpc: '2.0',
-4|mcp  |   id: 0
-4|mcp  | }
-4|mcp  | { method: 'notifications/initialized', jsonrpc: '2.0' }
-4|mcp  | { method: 'tools/list', jsonrpc: '2.0', id: 1 }
-4|mcp  | {
-4|mcp  |   method: 'initialize',
-4|mcp  |   params: {
-4|mcp  |     protocolVersion: '2025-03-26',
-4|mcp  |     capabilities: {},
-4|mcp  |     clientInfo: { name: 'mcp', version: '0.1.0' }
-4|mcp  |   },
-4|mcp  |   jsonrpc: '2.0',
-4|mcp  |   id: 0
-4|mcp  | }
-4|mcp  | { method: 'notifications/initialized', jsonrpc: '2.0' }
-4|mcp  | { method: 'tools/list', jsonrpc: '2.0', id: 1 }
-4|mcp  | {
-4|mcp  |   method: 'initialize',
-4|mcp  |   params: {
-4|mcp  |     protocolVersion: '2025-03-26',
-4|mcp  |     capabilities: {},
-4|mcp  |     clientInfo: { name: 'mcp', version: '0.1.0' }
-4|mcp  |   },
-4|mcp  |   jsonrpc: '2.0',
-4|mcp  |   id: 0
-4|mcp  | }
-    */
     await transport.handleRequest(req, res, req.body);
   }
 

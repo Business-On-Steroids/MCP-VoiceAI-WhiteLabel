@@ -4,16 +4,24 @@ import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/
 async function runClient() {
     // 1. Initialize the Transport with the server's public URL
     // Public MCP 
-    // const transport = new StreamableHTTPClientTransport("https://knowledge-mcp.global.api.aws", {});
-    // const transport = new StreamableHTTPClientTransport("https://api.githubcopilot.com/mcp/", {});
-    // const transport = new StreamableHTTPClientTransport("http://107.21.194.22:4000/mcp", {});
-    const transport = new StreamableHTTPClientTransport("https://backend.vavicky.com/mcp", {
-
-        // THIS is where you put the CREDENTIALS Bearer Token and all
-
+    // const transport = new StreamableHTTPClientTransport(new URL("https://knowledge-mcp.global.api.aws"), {});
+    // const transport = new StreamableHTTPClientTransport(new URL("https://api.githubcopilot.com/mcp/"), {});
+    // const transport = new StreamableHTTPClientTransport(new URL("http://107.21.194.22:4000/mcp"), {});
+    // const transport = new StreamableHTTPClientTransport(new URL("http://localhost:4000/mcp"), {});
+    // const transport = new StreamableHTTPClientTransport(new URL("https://backend.vavicky.com/mcp")
+    const token = ``;
+    const transport = new StreamableHTTPClientTransport(new URL("http://localhost:4000/mcp"), {
+        requestInit: {
+            headers: {
+                // This is where you put your Bearer Token
+                "Authorization": `Bearer ${token}`,
+                // You can add other custom headers if your server requires them
+                "Content-Type": "application/json",
+            }
+        }
     });
-    
-    // 2. Initialize the MCP Client
+
+    // 2. Initialize the MCP Client acts like Claude Desktop 
     const client = new Client({
         name: "my-node-client",
         version: "1.0.0"
