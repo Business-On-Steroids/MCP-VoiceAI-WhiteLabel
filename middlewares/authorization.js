@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 export async function auth(req, res, next) {
 
     //verify bearer token
-    const bearerHeader = req.headers['authorization'];
+    const bearerHeader = req.headers['authorization'] || req.headers['Authorization'];
 
     if (bearerHeader) {
 
