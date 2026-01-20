@@ -2,16 +2,14 @@ import express from "express";
 import cors from "cors";
 import dotenv from 'dotenv';
 import { auth } from './middlewares/authorization.js';
-// import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
 import * as Users from './tools/users.js';
-import * as Twilio from './tools/assistants.js';
-import * as Assistant from './tools/twilio.js';
+import * as Twilio from './tools/twilio.js';
+import * as Assistant from './tools/assistants.js';
 
 dotenv.config();
-
 
 const app = express();
 app.use(cors( ));

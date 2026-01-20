@@ -1,3 +1,8 @@
+
+import { z } from "zod";
+
+import { backend } from "./backend-client.js";
+
 export function getTools() {
     return [
         {
@@ -5,25 +10,39 @@ export function getTools() {
             config: {
                 title: 'get_assistant',
                 description: 'Get basic information about a specific assistant',
-                inputSchema: {
-                    type: 'object',
-                    properties: {
-                        assistant_id: { type: 'string', description: 'Assistant ID' }
-                    },
-                    required: ['assistant_id']
-                }
+                inputSchema: z.object({
+                    assistant_id: z.string().describe('Assistant ID')
+                })
             },
-            callback: (args) => {
-                
-                return {
-                    structuredContent: args,
-                    content: [
-                        {
-                            type: "text",
-                            text: "Done",
-
-                        },
-                    ],
+            callback: async (args) => {
+                try {
+                    const { assistant_id } = args;
+                    
+                    // Make actual API call to backend
+                    const assistant = await backend.assistants.findById(assistant_id);
+                    
+                    if (!assistant) {
+                        return {
+                            content: [{ type: "text", text: "Assistant not found" }],
+                            isError: true
+                        };
+                    }
+                    
+                    return {
+                        structuredContent: assistant,
+                        content: [
+                            {
+                                type: "text",
+                                text: `Found assistant: ${assistant.title || assistant.name || assistant_id}`,
+                            },
+                        ],
+                    };
+                } catch (error) {
+                    console.error("Error in get_assistant:", error);
+                    return {
+                        content: [{ type: "text", text: `Error retrieving assistant: ${error.message}` }],
+                        isError: true
+                    };
                 }
             }
         },
@@ -32,25 +51,39 @@ export function getTools() {
             config: {
                 title: 'get_one_assistant',
                 description: 'Get complete information about a specific assistant',
-                inputSchema: {
-                    type: 'object',
-                    properties: {
-                        assistant_id: { type: 'string', description: 'Assistant ID' }
-                    },
-                    required: ['assistant_id']
-                }
+                inputSchema: z.object({
+                    assistant_id: z.string().describe('Assistant ID')
+                })
             },
-            callback: (args) => {
-                
-                return {
-                    structuredContent: args,
-                    content: [
-                        {
-                            type: "text",
-                            text: "Done",
-
-                        },
-                    ],
+            callback: async (args) => {
+                try {
+                    const { assistant_id } = args;
+                    
+                    // Make actual API call to backend
+                    const assistant = await backend.assistants.findById(assistant_id);
+                    
+                    if (!assistant) {
+                        return {
+                            content: [{ type: "text", text: "Assistant not found" }],
+                            isError: true
+                        };
+                    }
+                    
+                    return {
+                        structuredContent: assistant,
+                        content: [
+                            {
+                                type: "text",
+                                text: `Retrieved complete details for assistant: ${assistant.title || assistant.name || assistant_id}`,
+                            },
+                        ],
+                    };
+                } catch (error) {
+                    console.error("Error in get_one_assistant:", error);
+                    return {
+                        content: [{ type: "text", text: `Error retrieving assistant details: ${error.message}` }],
+                        isError: true
+                    };
                 }
             }
         },
@@ -59,53 +92,58 @@ export function getTools() {
             config: {
                 title: 'create_assistant',
                 description: 'Create a new assistant with comprehensive configuration',
-                inputSchema: {
-                    type: 'object',
-                    properties: {
-                        title: { type: 'string', description: 'Assistant name' },
-                        apiKey: { type: 'string', description: 'OpenAI API Key' },
-                        welcome_message: { type: 'string', description: 'Welcome message', default: 'Hello how can I help you today?' },
-                        prompt: { type: 'string', description: 'Instructions/Prompt for the assistant' },
-                        active: { type: 'boolean', description: 'Whether assistant is active', default: true },
-                        assistant_type: { type: 'string', enum: ['Text Only', 'Voice Only', 'Text & Voice', 'Voice & Text'], description: 'AI Type' },
-                        ai_platform: { type: 'string', enum: ['openai', 'gemini', 'openrouter', 'deepseek'], description: 'AI Provider' },
-                        openai_model: { type: 'string', description: 'AI Model', default: 'gpt-3.5-turbo' },
-                        openai_temperature: { type: 'number', description: 'AI Temperature (0-2)', default: 0.8 },
-                        booking_bot: { type: 'boolean', description: 'Is booking bot', default: false },
-                        location: { type: 'string', description: 'GoHighLevel Location' },
-                        calendar: { type: 'string', description: 'Calendar ID' },
-                        timezone: { type: 'string', description: 'Timezone' },
-                        custom_field: { type: 'string', description: 'Custom field' },
-                        limit_call_time: { type: 'number', description: 'Limit call time in seconds', default: 240 },
-                        limit_call_tokens: { type: 'number', description: 'Limit call tokens', default: 2000 },
-                        max_call_tokens: { type: 'number', description: 'Max call tokens', default: 18000 },
-                        elevenlabs_voice_id: { type: 'string', description: 'ElevenLabs Voice ID' },
-                        twilio_sid: { type: 'string', description: 'Twilio SID' },
-                        twilio_token: { type: 'string', description: 'Twilio Token' },
-                        twilio_phone: { type: 'string', description: 'Twilio Phone Number' },
-                        twilio_welcome: { type: 'string', description: 'Twilio Welcome Message' },
-                        twilio_speech_timeout: { type: 'number', description: 'Twilio Speech Timeout', default: 3 },
-                        twilio_initial_delay: { type: 'number', description: 'Twilio Initial Delay', default: 1 },
-                        google_calendar: { type: 'boolean', description: 'Google Calendar Integration', default: false },
-                        webhook_to_send: { type: 'string', description: 'Webhook URL' },
-                        openai_realtime: { type: 'boolean', description: 'OpenAI Realtime', default: false },
-                        openai_realtime_voice: { type: 'string', enum: ['alloy', 'echo', 'fable', 'nova', 'onyx', 'shimmer'], description: 'OpenAI Realtime Voice' },
-                        openai_websites: { type: 'array', items: { type: 'string' }, description: 'OpenAI Websites' }
-                    },
-                    required: ['name', 'apiKey']
-                }
+                inputSchema: z.object({
+                    title: z.string().describe('Assistant name'),
+                    apiKey: z.string().describe('OpenAI API Key'),
+                    welcome_message: z.string().default('Hello how can I help you today?').describe('Welcome message'),
+                    prompt: z.string().describe('Instructions/Prompt for the assistant'),
+                    active: z.boolean().default(true).describe('Whether assistant is active'),
+                    assistant_type: z.enum(['Text Only', 'Voice Only', 'Text & Voice', 'Voice & Text']).describe('AI Type'),
+                    ai_platform: z.enum(['openai', 'gemini', 'openrouter', 'deepseek']).describe('AI Provider'),
+                    openai_model: z.string().default('gpt-3.5-turbo').describe('AI Model'),
+                    openai_temperature: z.number().default(0.8).describe('AI Temperature (0-2)'),
+                    booking_bot: z.boolean().default(false).describe('Is booking bot'),
+                    location: z.string().optional().describe('GoHighLevel Location'),
+                    calendar: z.string().optional().describe('Calendar ID'),
+                    timezone: z.string().optional().describe('Timezone'),
+                    custom_field: z.string().optional().describe('Custom field'),
+                    limit_call_time: z.number().default(240).describe('Limit call time in seconds'),
+                    limit_call_tokens: z.number().default(2000).describe('Limit call tokens'),
+                    max_call_tokens: z.number().default(18000).describe('Max call tokens'),
+                    elevenlabs_voice_id: z.string().optional().describe('ElevenLabs Voice ID'),
+                    twilio_sid: z.string().optional().describe('Twilio SID'),
+                    twilio_token: z.string().optional().describe('Twilio Token'),
+                    twilio_phone: z.string().optional().describe('Twilio Phone Number'),
+                    twilio_welcome: z.string().optional().describe('Twilio Welcome Message'),
+                    twilio_speech_timeout: z.number().default(3).describe('Twilio Speech Timeout'),
+                    twilio_initial_delay: z.number().default(1).describe('Twilio Initial Delay'),
+                    google_calendar: z.boolean().default(false).describe('Google Calendar Integration'),
+                    webhook_to_send: z.string().optional().describe('Webhook URL'),
+                    openai_realtime: z.boolean().default(false).describe('OpenAI Realtime'),
+                    openai_realtime_voice: z.enum(['alloy', 'echo', 'fable', 'nova', 'onyx', 'shimmer']).optional().describe('OpenAI Realtime Voice'),
+                    openai_websites: z.array(z.string()).optional().describe('OpenAI Websites')
+                })
             },
-            callback: (args) => {
-                
-                return {
-                    structuredContent: args,
-                    content: [
-                        {
-                            type: "text",
-                            text: "Done",
-
-                        },
-                    ],
+            callback: async (args) => {
+                try {
+                    // Make actual API call to backend
+                    const createdAssistant = await backend.assistants.create(args);
+                    
+                    return {
+                        structuredContent: createdAssistant,
+                        content: [
+                            {
+                                type: "text",
+                                text: `Successfully created assistant: ${args.title}`,
+                            },
+                        ],
+                    };
+                } catch (error) {
+                    console.error("Error in create_assistant:", error);
+                    return {
+                        content: [{ type: "text", text: `Error creating assistant: ${error.message}` }],
+                        isError: true
+                    };
                 }
             }
         },
@@ -114,39 +152,46 @@ export function getTools() {
             config: {
                 title: 'update_assistant',
                 description: 'Update an existing assistant',
-                inputSchema: {
-                    type: 'object',
-                    properties: {
-                        assistant_id: { type: 'string', description: 'Assistant ID' },
-                        title: { type: 'string', description: 'Assistant name' },
-                        apiKey: { type: 'string', description: 'OpenAI API Key' },
-                        welcome_message: { type: 'string', description: 'Welcome message' },
-                        prompt: { type: 'string', description: 'Instructions/Prompt' },
-                        active: { type: 'boolean', description: 'Whether assistant is active' },
-                        assistant_type: { type: 'string', enum: ['Text Only', 'Voice Only', 'Text & Voice', 'Voice & Text'] },
-                        ai_platform: { type: 'string', enum: ['openai', 'gemini', 'openrouter', 'deepseek'] },
-                        openai_model: { type: 'string', description: 'AI Model' },
-                        openai_temperature: { type: 'number', description: 'AI Temperature (0-2)' },
-                        booking_bot: { type: 'boolean', description: 'Is booking bot' },
-                        location: { type: 'string', description: 'GoHighLevel Location' },
-                        calendar: { type: 'string', description: 'Calendar ID' },
-                        timezone: { type: 'string', description: 'Timezone' },
-                        custom_field: { type: 'string', description: 'Custom field' }
-                    },
-                    required: ['assistant_id']
-                }
+                inputSchema: z.object({
+                    assistant_id: z.string().describe('Assistant ID'),
+                    title: z.string().optional().describe('Assistant name'),
+                    apiKey: z.string().optional().describe('OpenAI API Key'),
+                    welcome_message: z.string().optional().describe('Welcome message'),
+                    prompt: z.string().optional().describe('Instructions/Prompt'),
+                    active: z.boolean().optional().describe('Whether assistant is active'),
+                    assistant_type: z.enum(['Text Only', 'Voice Only', 'Text & Voice', 'Voice & Text']).optional(),
+                    ai_platform: z.enum(['openai', 'gemini', 'openrouter', 'deepseek']).optional(),
+                    openai_model: z.string().optional().describe('AI Model'),
+                    openai_temperature: z.number().optional().describe('AI Temperature (0-2)'),
+                    booking_bot: z.boolean().optional().describe('Is booking bot'),
+                    location: z.string().optional().describe('GoHighLevel Location'),
+                    calendar: z.string().optional().describe('Calendar ID'),
+                    timezone: z.string().optional().describe('Timezone'),
+                    custom_field: z.string().optional().describe('Custom field')
+                })
             },
-            callback: (args) => {
-                
-                return {
-                    structuredContent: args,
-                    content: [
-                        {
-                            type: "text",
-                            text: "Done",
-
-                        },
-                    ],
+            callback: async (args) => {
+                try {
+                    const { assistant_id, ...updateData } = args;
+                    
+                    // Make actual API call to backend
+                    const updatedAssistant = await backend.assistants.update(assistant_id, updateData);
+                    
+                    return {
+                        structuredContent: updatedAssistant,
+                        content: [
+                            {
+                                type: "text",
+                                text: `Successfully updated assistant: ${assistant_id}`,
+                            },
+                        ],
+                    };
+                } catch (error) {
+                    console.error("Error in update_assistant:", error);
+                    return {
+                        content: [{ type: "text", text: `Error updating assistant: ${error.message}` }],
+                        isError: true
+                    };
                 }
             }
         },
@@ -155,25 +200,32 @@ export function getTools() {
             config: {
                 title: 'delete_assistant',
                 description: 'Delete an assistant',
-                inputSchema: {
-                    type: 'object',
-                    properties: {
-                        assistant_id: { type: 'string', description: 'Assistant ID' }
-                    },
-                    required: ['assistant_id']
-                }
+                inputSchema: z.object({
+                    assistant_id: z.string().describe('Assistant ID')
+                })
             },
-            callback: (args) => {
-                
-                return {
-                    structuredContent: args,
-                    content: [
-                        {
-                            type: "text",
-                            text: "Done",
-
-                        },
-                    ],
+            callback: async (args) => {
+                try {
+                    const { assistant_id } = args;
+                    
+                    // Make actual API call to backend
+                    const result = await backend.assistants.delete(assistant_id);
+                    
+                    return {
+                        structuredContent: result,
+                        content: [
+                            {
+                                type: "text",
+                                text: `Successfully deleted assistant: ${assistant_id}`,
+                            },
+                        ],
+                    };
+                } catch (error) {
+                    console.error("Error in delete_assistant:", error);
+                    return {
+                        content: [{ type: "text", text: `Error deleting assistant: ${error.message}` }],
+                        isError: true
+                    };
                 }
             }
         },
@@ -182,25 +234,39 @@ export function getTools() {
             config: {
                 title: 'get_assistant_usage',
                 description: 'Get usage statistics for an assistant',
-                inputSchema: {
-                    type: 'object',
-                    properties: {
-                        assistant_id: { type: 'string', description: 'Assistant ID' }
-                    },
-                    required: ['assistant_id']
-                }
+                inputSchema: z.object({
+                    assistant_id: z.string().describe('Assistant ID')
+                })
             },
-            callback: (args) => {
-                
-                return {
-                    structuredContent: args,
-                    content: [
-                        {
-                            type: "text",
-                            text: "Done",
-
-                        },
-                    ],
+            callback: async (args) => {
+                try {
+                    const { assistant_id } = args;
+                    
+                    // Make actual API call to backend
+                    const usageStats = await backend.assistants.getUsage(assistant_id);
+                    
+                    const summary = usageStats.summary || usageStats;
+                    const text = `Usage for ${assistant_id}:
+- Total calls: ${summary.totalCalls || 0}
+- Total tokens: ${summary.totalTokens || 0}
+- Total duration: ${summary.totalDuration || 0} seconds
+- Last active: ${summary.lastActive || 'Never'}`;
+                    
+                    return {
+                        structuredContent: usageStats,
+                        content: [
+                            {
+                                type: "text",
+                                text: text,
+                            },
+                        ],
+                    };
+                } catch (error) {
+                    console.error("Error in get_assistant_usage:", error);
+                    return {
+                        content: [{ type: "text", text: `Error retrieving usage stats: ${error.message}` }],
+                        isError: true
+                    };
                 }
             }
         },
@@ -209,23 +275,31 @@ export function getTools() {
             config: {
                 title: 'get_assistants_token_usage',
                 description: 'Get token usage across all assistants',
-                inputSchema: {
-                    type: 'object',
-                    properties: {},
-                    required: []
-                }
+                inputSchema: z.object({})
             },
-            callback: (args) => {
-                
-                return {
-                    structuredContent: args,
-                    content: [
-                        {
-                            type: "text",
-                            text: "Done",
-
-                        },
-                    ],
+            callback: async (args) => {
+                try {
+                    // Make actual API call to backend
+                    const tokenUsage = await backend.assistants.getAllTokenUsage();
+                    
+                    const totalTokens = tokenUsage.totalTokens || 0;
+                    const assistantsCount = tokenUsage.assistantsCount || Object.keys(tokenUsage).length;
+                    
+                    return {
+                        structuredContent: tokenUsage,
+                        content: [
+                            {
+                                type: "text",
+                                text: `Total token usage across all assistants: ${totalTokens} tokens (${assistantsCount} assistants)`,
+                            },
+                        ],
+                    };
+                } catch (error) {
+                    console.error("Error in get_assistants_token_usage:", error);
+                    return {
+                        content: [{ type: "text", text: `Error retrieving token usage: ${error.message}` }],
+                        isError: true
+                    };
                 }
             }
         }
