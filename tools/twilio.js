@@ -15,12 +15,13 @@ export function getTools() {
                     contact_id: z.string().optional().describe('Contact ID (optional)')
                 })
             },
-            callback: async (args) => {
+            callback: async (args, c) => {
                 try {
+                    const bearerToken = c.requestInfo.headers;
                     const { assistant_id, phone_number, contact_id } = args;
                     
                     // Make actual API call to backend.vavicky.com
-                    const callResult = await backend.twilio.makeCall(args);
+                    const callResult = await backend.twilio.makeCall(args, bearerToken);
                     
                     return {
                         structuredContent: callResult,
@@ -50,12 +51,13 @@ export function getTools() {
                     contact_bulk_id: z.string().describe('Contact bulk ID')
                 })
             },
-            callback: async (args) => {
+            callback: async (args, c) => {
                 try {
+                    const bearerToken = c.requestInfo.headers;
                     const { assistant_id, contact_bulk_id } = args;
                     
                     // Make actual API call to backend.vavicky.com
-                    const bulkCallResult = await backend.twilio.makeBulkCall(args);
+                    const bulkCallResult = await backend.twilio.makeBulkCall(args, bearerToken);
                     
                     return {
                         structuredContent: bulkCallResult,
@@ -82,10 +84,11 @@ export function getTools() {
                 description: 'Get all calls currently in progress',
                 inputSchema: z.object({})
             },
-            callback: async (args) => {
+            callback: async (args, c) => {
                 try {
                     // Make actual API call to backend.vavicky.com
-                    const callsInProgress = await backend.twilio.getCallsInProgress();
+                    const bearerToken = c.requestInfo.headers;
+                    const callsInProgress = await backend.twilio.getCallsInProgress(bearerToken);
                     
                     const activeCalls = callsInProgress.calls || callsInProgress.activeCalls || [];
                     const callCount = activeCalls.length;
@@ -131,12 +134,14 @@ export function getTools() {
                     call_id: z.string().describe('Call ID')
                 })
             },
-            callback: async (args) => {
+            callback: async (args, c) => {
                 try {
+
+                    const bearerToken = c.requestInfo.headers;
                     const { call_id } = args;
                     
                     // Make actual API call to backend.vavicky.com
-                    const cancelResult = await backend.twilio.cancelCall(call_id);
+                    const cancelResult = await backend.twilio.cancelCall(call_id, bearerToken);
                     
                     return {
                         structuredContent: cancelResult,
@@ -169,12 +174,14 @@ export function getTools() {
                     contact_id: z.string().optional().describe('Contact ID (optional)')
                 })
             },
-            callback: async (args) => {
+            callback: async (args, c) => {
                 try {
+
+                    const bearerToken = c.requestInfo.headers;
                     const { assistant_id, phone_number, message, contact_id } = args;
                     
                     // Make actual API call to backend.vavicky.com
-                    const smsResult = await backend.twilio.sendSMS(args);
+                    const smsResult = await backend.twilio.sendSMS(args, bearerToken);
                     
                     const messagePreview = message.length > 50 ? message.substring(0, 47) + '...' : message;
                     

@@ -14,20 +14,21 @@ export function getTools() {
                     assistant_id: z.string().describe('Assistant ID')
                 })
             },
-            callback: async (args) => {
+            callback: async (args, c) => {
                 try {
+                    const bearerToken = c.requestInfo.headers;
                     const { assistant_id } = args;
-                    
+
                     // Make actual API call to backend
-                    const assistant = await backend.assistants.findById(assistant_id);
-                    
+                    const assistant = await backend.assistants.findById(assistant_id, bearerToken);
+
                     if (!assistant) {
                         return {
                             content: [{ type: "text", text: "Assistant not found" }],
                             isError: true
                         };
                     }
-                    
+
                     return {
                         structuredContent: assistant,
                         content: [
@@ -55,20 +56,21 @@ export function getTools() {
                     assistant_id: z.string().describe('Assistant ID')
                 })
             },
-            callback: async (args) => {
+            callback: async (args, c) => {
                 try {
                     const { assistant_id } = args;
-                    
+
                     // Make actual API call to backend
-                    const assistant = await backend.assistants.findById(assistant_id);
-                    
+                    const bearerToken = c.requestInfo.headers;
+                    const assistant = await backend.assistants.findById(assistant_id, bearerToken);
+
                     if (!assistant) {
                         return {
                             content: [{ type: "text", text: "Assistant not found" }],
                             isError: true
                         };
                     }
-                    
+
                     return {
                         structuredContent: assistant,
                         content: [
@@ -124,11 +126,12 @@ export function getTools() {
                     openai_websites: z.array(z.string()).optional().describe('OpenAI Websites')
                 })
             },
-            callback: async (args) => {
+            callback: async (args, c) => {
                 try {
                     // Make actual API call to backend
-                    const createdAssistant = await backend.assistants.create(args);
-                    
+                    const bearerToken = c.requestInfo.headers;
+                    const createdAssistant = await backend.assistants.create(args, bearerToken);
+
                     return {
                         structuredContent: createdAssistant,
                         content: [
@@ -170,13 +173,14 @@ export function getTools() {
                     custom_field: z.string().optional().describe('Custom field')
                 })
             },
-            callback: async (args) => {
+            callback: async (args, c) => {
                 try {
                     const { assistant_id, ...updateData } = args;
-                    
+
                     // Make actual API call to backend
-                    const updatedAssistant = await backend.assistants.update(assistant_id, updateData);
-                    
+                    const bearerToken = c.requestInfo.headers;
+                    const updatedAssistant = await backend.assistants.update(assistant_id, updateData, bearerToken);
+
                     return {
                         structuredContent: updatedAssistant,
                         content: [
@@ -204,13 +208,14 @@ export function getTools() {
                     assistant_id: z.string().describe('Assistant ID')
                 })
             },
-            callback: async (args) => {
+            callback: async (args, c) => {
                 try {
                     const { assistant_id } = args;
-                    
+
                     // Make actual API call to backend
-                    const result = await backend.assistants.delete(assistant_id);
-                    
+                    const bearerToken = c.requestInfo.headers;
+                    const result = await backend.assistants.delete(assistant_id, bearerToken);
+
                     return {
                         structuredContent: result,
                         content: [
@@ -238,20 +243,21 @@ export function getTools() {
                     assistant_id: z.string().describe('Assistant ID')
                 })
             },
-            callback: async (args) => {
+            callback: async (args, c) => {
                 try {
                     const { assistant_id } = args;
-                    
+
                     // Make actual API call to backend
-                    const usageStats = await backend.assistants.getUsage(assistant_id);
-                    
+                    const bearerToken = c.requestInfo.headers;
+                    const usageStats = await backend.assistants.getUsage(assistant_id, bearerToken);
+
                     const summary = usageStats.summary || usageStats;
                     const text = `Usage for ${assistant_id}:
-- Total calls: ${summary.totalCalls || 0}
-- Total tokens: ${summary.totalTokens || 0}
-- Total duration: ${summary.totalDuration || 0} seconds
-- Last active: ${summary.lastActive || 'Never'}`;
-                    
+                    - Total calls: ${summary.totalCalls || 0}
+                    - Total tokens: ${summary.totalTokens || 0}
+                    - Total duration: ${summary.totalDuration || 0} seconds
+                    - Last active: ${summary.lastActive || 'Never'}`;
+
                     return {
                         structuredContent: usageStats,
                         content: [
@@ -277,14 +283,15 @@ export function getTools() {
                 description: 'Get token usage across all assistants',
                 inputSchema: z.object({})
             },
-            callback: async (args) => {
+            callback: async (args, c) => {
                 try {
                     // Make actual API call to backend
-                    const tokenUsage = await backend.assistants.getAllTokenUsage();
-                    
+                    const bearerToken = c.requestInfo.headers;
+                    const tokenUsage = await backend.assistants.getAllTokenUsage(bearerToken);
+
                     const totalTokens = tokenUsage.totalTokens || 0;
                     const assistantsCount = tokenUsage.assistantsCount || Object.keys(tokenUsage).length;
-                    
+
                     return {
                         structuredContent: tokenUsage,
                         content: [

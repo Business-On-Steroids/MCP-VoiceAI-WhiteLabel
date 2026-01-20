@@ -10,10 +10,11 @@ export function getTools() {
                 description: 'Get user data including tokens and settings',
                 inputSchema: z.object({})
             },
-            callback: async (args) => {
+            callback: async (args, c) => {
                 try {
                     // Make actual API call to backend to get current user data
-                    const userData = await backend.users.getUser();
+                    const bearerToken = c.requestInfo.headers;
+                    const userData = await backend.users.getUser(bearerToken);
                     
                     if (!userData) {
                         return {
@@ -84,10 +85,11 @@ export function getTools() {
                     call_recording_enabled: z.boolean().optional().describe('Enable call recordings')
                 })
             },
-            callback: async (args) => {
+            callback: async (args, c) => {
                 try {
                     // Make actual API call to backend to update user settings
-                    const updateResult = await backend.users.updateUser(args);
+                    const bearerToken = c.requestInfo.headers;
+                    const updateResult = await backend.users.updateUser(args, bearerToken);
                     
                     return {
                         structuredContent: updateResult,
@@ -114,10 +116,11 @@ export function getTools() {
                 description: 'Get current user preferences and settings',
                 inputSchema: z.object({})
             },
-            callback: async (args) => {
+            callback: async (args, c) => {
                 try {
                     // Make actual API call to backend to get user settings
-                    const settings = await backend.users.getUserSettings();
+                    const bearerToken = c.requestInfo.headers;
+                    const settings = await backend.users.getUserSettings(bearerToken);
                     
                     let settingsSummary = `User Settings:\n`;
                     
@@ -170,10 +173,11 @@ export function getTools() {
                 description: 'Get current token balance and usage information',
                 inputSchema: z.object({})
             },
-            callback: async (args) => {
+            callback: async (args, c) => {
                 try {
                     // Get user data which includes token information
-                    const userData = await backend.users.getUser();
+                    const bearerToken = c.requestInfo.headers;
+                    const userData = await backend.users.getUser(bearerToken);
                     
                     if (!userData || !userData.tokens) {
                         return {
