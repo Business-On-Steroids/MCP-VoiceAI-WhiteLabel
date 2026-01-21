@@ -21,6 +21,7 @@ export function getTools() {
                     const { assistant_id, phone_number, contact_id } = args;
                     
                     // Make actual API call to backend.vavicky.com
+                    args.phonenumber = phone_number;
                     const callResult = await backend.twilio.makeCall(args, bearerToken);
                     
                     return {
@@ -179,6 +180,7 @@ export function getTools() {
 
                     const bearerToken = c.requestInfo.headers;
                     const { assistant_id, phone_number, message, contact_id } = args;
+                    args.phonenumber = phone_number;
                     
                     // Make actual API call to backend.vavicky.com
                     const smsResult = await backend.twilio.sendSMS(args, bearerToken);
