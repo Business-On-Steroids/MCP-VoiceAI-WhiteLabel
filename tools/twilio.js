@@ -171,7 +171,7 @@ export function getTools() {
                     // assistant_id: z.string().describe('Assistant ID'),
                     phone_number: z.string().describe('Phone number to send SMS'),
                     message: z.string().describe('SMS message content'),
-                    contact_id: z.string().optional().describe('Contact ID (optional)')
+                    // contact_id: z.string().optional().describe('Contact ID (optional)')
                 })
             },
             callback: async (args, c) => {
