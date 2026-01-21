@@ -113,4 +113,4 @@ app.post("/messages", async (req, res) => {
   await transport.handlePostMessage(req, res, req.body);
 });
 
-app.listen(4000, () => console.log("MCP Server running at http://localhost:4000/mcp && http://localhost:4000/sse"));
+app.listen(process.env.PORT || 4000, () => console.log("MCP Server running at http://localhost:4000/mcp && http://localhost:4000/sse"));
