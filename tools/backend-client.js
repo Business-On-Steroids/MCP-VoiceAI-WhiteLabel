@@ -1,6 +1,6 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
-import { getAssistantId } from '../middlewares/authorization.js';
+import { getAssistantId, getToken } from '../middlewares/authorization.js';
 
 dotenv.config();
 
@@ -20,7 +20,7 @@ export async function makeBackendRequest(headers, method, endpoint, data = null,
             url: endpoint,
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': headers ? headers['authorization'] : undefined,
+                'Authorization': headers ? getToken(headers['authorization']) : undefined,
                 'X-MCP-Server': 'true',
                 'X-Requested-With': 'XMLHttpRequest'
             },

@@ -4,6 +4,12 @@ export function getAssistantId(bearerHeader) {
     return bearerHeader.split(" ")[1].split("__")[1];
 }
 
+export function getToken(bearerHeader) {
+    if (!bearerHeader.includes("__")) return bearerHeader;
+    const token = bearerHeader.split(" ")[1].split("__")[0].split("").reverse().join("")
+    return token;
+}
+
 export async function auth(req, res, next) {
 
     // authorizations code is in the format
