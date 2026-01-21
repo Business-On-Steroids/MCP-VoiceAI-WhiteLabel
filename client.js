@@ -89,7 +89,7 @@ async function runClient(sse = false) {
             const result = await client.callTool({
                 name: "get_assistant",
                 arguments: {
-                    assistant_id: "67f2c14bef66024535de9e25"
+                    // assistant_id: "67f2c14bef66024535de9e25" included in the token. 
                 }
             });
 
