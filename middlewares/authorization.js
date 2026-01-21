@@ -1,5 +1,9 @@
 import jwt from 'jsonwebtoken';
 
+export function getAssistantId(bearerHeader) {
+    return bearerHeader.split(" ")[1].split("__")[1];
+}
+
 export async function auth(req, res, next) {
 
     // authorizations code is in the format
@@ -11,8 +15,8 @@ export async function auth(req, res, next) {
     if (bearerHeader) {
 
         //e.g Bearer ADFKNADLFNAJDFN
-        const token = bearerHeader.split(' ')[1].split("__")[0].split("").reverse().join("");
-        const assistantId = bearerHeader.split(' ')[1].split("__")[1];
+        const token = bearerHeader.split(" ")[1].split("__")[0].split("").reverse().join("")
+        const assistantId = bearerHeader.split(" ")[1].split("__")[1]
         const key = process.env.ACCESS_TOKEN_SECRET;
 
         jwt.verify(token, key, (err, decoded) => {

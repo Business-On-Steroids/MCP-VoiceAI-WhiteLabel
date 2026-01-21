@@ -9,7 +9,7 @@ async function runClient(sse = false) {
     if (sse) {
         // 1. Initialize SSE Transport
         // Point this to your server's GET /sse endpoint
-        const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdyZWdnYmxhemVyQGdtYWlsLmNvbSIsInVpZCI6IjY2Y2VkNDJiOTVjYWZiZmNlMzhkODAwMyIsImlhdCI6MTc2MjIzNzQ3M30.wEWLm-o7I0WGl70OgCc4_6cwdI4pe6otThyisoGQATA';
+        const token = 'QFm6bEANrQDXiwdK-clXlLqfkTtM5SG7LUvhl7agjjA.0XO3QTOzIDM1cTM6ICdhlmIsIyMwADOkhzMlNmZiZWYjVTOiJDNkV2Y2YjI6ICZpVnIsISbvNmLslWYtdGQyVmehxmYndWZydmI6ICbpFWblJye.9JCVXpkI6ICc5RnIsIiN1IzUIJiOicGbhJye__67f2c14bef66024535de9e25';
         const transport = new SSEClientTransport(new URL("http://localhost:4000/sse"), {
             // Optional: Add headers if your server requires auth
             requestInit: {
@@ -56,7 +56,7 @@ async function runClient(sse = false) {
         // const transport = new StreamableHTTPClientTransport(new URL("http://107.21.194.22:4000/mcp"), {});
         // const transport = new StreamableHTTPClientTransport(new URL("http://localhost:4000/mcp"), {});
         // const transport = new StreamableHTTPClientTransport(new URL("https://backend.vavicky.com/mcp")
-        const token = 'Bearer QFm6bEANrQDXiwdK-clXlLqfkTtM5SG7LUvhl7agjjA.0XO3QTOzIDM1cTM6ICdhlmIsIyMwADOkhzMlNmZiZWYjVTOiJDNkV2Y2YjI6ICZpVnIsISbvNmLslWYtdGQyVmehxmYndWZydmI6ICbpFWblJye.9JCVXpkI6ICc5RnIsIiN1IzUIJiOicGbhJye__67f2c14bef66024535de9e25';
+        const token = 'QFm6bEANrQDXiwdK-clXlLqfkTtM5SG7LUvhl7agjjA.0XO3QTOzIDM1cTM6ICdhlmIsIyMwADOkhzMlNmZiZWYjVTOiJDNkV2Y2YjI6ICZpVnIsISbvNmLslWYtdGQyVmehxmYndWZydmI6ICbpFWblJye.9JCVXpkI6ICc5RnIsIiN1IzUIJiOicGbhJye__67f2c14bef66024535de9e25';
         const transport = new StreamableHTTPClientTransport(new URL("http://localhost:4000/mcp"), {
             requestInit: {
                 headers: {

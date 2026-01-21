@@ -1,5 +1,6 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
+import { getAssistantId } from '../middlewares/authorization.js';
 
 dotenv.config();
 
@@ -102,7 +103,7 @@ export const backend = {
     assistants: {
         // Get assistant by ID
         findById: async (assistantId, headers) => {
-            return makeBackendRequest(headers, 'GET', `/api/assistants/${assistantId}`);
+            return makeBackendRequest(headers, 'GET', `/api/assistants/${getAssistantId(headers['authorization'])}`);
         },
 
         // Create new assistant
@@ -112,17 +113,17 @@ export const backend = {
 
         // Update existing assistant
         update: async (assistantId, updateData, headers) => {
-            return makeBackendRequest(headers, 'PUT', `/api/assistants/${assistantId}`, updateData);
+            return makeBackendRequest(headers, 'PUT', `/api/assistants/${getAssistantId(headers['authorization'])}`, updateData);
         },
 
         // Delete assistant
         delete: async (assistantId, headers) => {
-            return makeBackendRequest(headers, 'DELETE', `/api/assistants/${assistantId}`);
+            // return makeBackendRequest(headers, 'DELETE', `/api/assistants/${getAssistantId(headers['authorization'])}`);
         },
 
         // Get assistant usage statistics
         getUsage: async (assistantId, headers) => {
-            return makeBackendRequest(headers, 'GET', `/api/assistants/${assistantId}/usage`);
+            return makeBackendRequest(headers, 'GET', `/api/assistants/${getAssistantId(headers['authorization'])}/usage`);
         },
 
         // Get token usage across all assistants
@@ -137,22 +138,22 @@ export const backend = {
 
         // Test assistant configuration
         testConfig: async (assistantId, testData, headers) => {
-            return makeBackendRequest(headers, 'POST', `/api/assistants/${assistantId}/test`, testData);
+            return makeBackendRequest(headers, 'POST', `/api/assistants/${getAssistantId(headers['authorization'])}/test`, testData);
         },
 
         // Get assistant logs
         getLogs: async (assistantId, params = {}, headers) => {
-            return makeBackendRequest(headers, 'GET', `/api/assistants/${assistantId}/logs`, null, params);
+            return makeBackendRequest(headers, 'GET', `/api/assistants/${getAssistantId(headers['authorization'])}/logs`, null, params);
         },
 
         // Clone assistant
         clone: async (assistantId, cloneData = {}, headers) => {
-            return makeBackendRequest(headers, 'POST', `/api/assistants/${assistantId}/clone`, cloneData);
+            return makeBackendRequest(headers, 'POST', `/api/assistants/${getAssistantId(headers['authorization'])}/clone`, cloneData);
         },
 
         // Export assistant configuration
         exportConfig: async (assistantId, headers) => {
-            return makeBackendRequest(headers, 'GET', `/api/assistants/${assistantId}/export`);
+            return makeBackendRequest(headers, 'GET', `/api/assistants/${getAssistantId(headers['authorization'])}/export`);
         },
 
         // Import assistant configuration
@@ -165,11 +166,13 @@ export const backend = {
     twilio: {
         // Make a single phone call
         makeCall: async (callData, headers) => {
+            callData.assistant_id = getAssistantId(headers['authorization']);
             return makeBackendRequest(headers, 'POST', '/api/twilio/calls', callData);
         },
 
         // Make bulk phone calls
         makeBulkCall: async (bulkCallData, headers) => {
+            callData.assistant_id = getAssistantId(headers['authorization']);
             return makeBackendRequest(headers, 'POST', '/api/twilio/calls/bulk', bulkCallData);
         },
 
@@ -373,7 +376,7 @@ export const backend = {
 
         // Get assistant analytics
         getAssistantAnalytics: async (assistantId, params = {}, headers) => {
-            return makeBackendRequest(headers, 'GET', `/api/analytics/assistants/${assistantId}`, null, params);
+            return makeBackendRequest(headers, 'GET', `/api/analytics/assistants/${getAssistantId(headers['authorization'])}`, null, params);
         },
 
         // Get token usage analytics
