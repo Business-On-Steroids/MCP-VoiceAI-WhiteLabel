@@ -167,18 +167,18 @@ export const backend = {
         // Make a single phone call
         makeCall: async (callData, headers) => {
             callData.assistant_id = getAssistantId(headers['authorization']);
-            return makeBackendRequest(headers, 'POST', '/api/twilio/calls', callData);
+            return makeBackendRequest(headers, 'POST', `/api/twilio/${getAssistantId(headers['authorization'])}/calls`, callData);
         },
 
         // Make bulk phone calls
         makeBulkCall: async (bulkCallData, headers) => {
             callData.assistant_id = getAssistantId(headers['authorization']);
-            return makeBackendRequest(headers, 'POST', '/api/twilio/calls/bulk', bulkCallData);
+            return makeBackendRequest(headers, 'POST', `/api/twilio/${getAssistantId(headers['authorization'])}/callbulk/${callData.contact_bulk_id}`, bulkCallData);
         },
 
         // Get calls currently in progress
         getCallsInProgress: async (headers) => {
-            return makeBackendRequest(headers, 'GET', '/api/twilio/calls/in-progress');
+            return makeBackendRequest(headers, 'GET', '/api/twilio/calls');
         },
 
         // Cancel an active phone call
@@ -188,7 +188,7 @@ export const backend = {
 
         // Send SMS message
         sendSMS: async (smsData, headers) => {
-            return makeBackendRequest(headers, 'POST', '/api/twilio/sms', smsData);
+            return makeBackendRequest(headers, 'POST', `/api/twilio/${getAssistantId(headers['authorization'])}/sms`, smsData);
         },
 
         // Additional Twilio endpoints for enhanced functionality
