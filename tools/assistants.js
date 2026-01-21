@@ -100,8 +100,8 @@ export function getTools() {
                     welcome_message: z.string().default('Hello how can I help you today?').describe('Welcome message'),
                     prompt: z.string().describe('Instructions/Prompt for the assistant'),
                     active: z.boolean().default(true).describe('Whether assistant is active'),
-                    assistant_type: z.enum(['Text Only', 'Voice Only', 'Text & Voice', 'Voice & Text']).describe('AI Type'),
-                    ai_platform: z.enum(['openai', 'gemini', 'openrouter', 'deepseek']).describe('AI Provider'),
+                    assistant_type: z.string().optional().describe("Assistant type from these options" + ['Text Only', 'Voice Only', 'Text & Voice', 'Voice & Text'].join(', ')),
+                    ai_platform: z.string().optional().describe("AI Platform to used from these options: " + ['openai', 'gemini', 'openrouter', 'deepseek'].join(', ')),
                     openai_model: z.string().default('gpt-3.5-turbo').describe('AI Model'),
                     openai_temperature: z.number().default(0.8).describe('AI Temperature (0-2)'),
                     booking_bot: z.boolean().default(false).describe('Is booking bot'),
@@ -122,8 +122,9 @@ export function getTools() {
                     google_calendar: z.boolean().default(false).describe('Google Calendar Integration'),
                     webhook_to_send: z.string().optional().describe('Webhook URL'),
                     openai_realtime: z.boolean().default(false).describe('OpenAI Realtime'),
-                    openai_realtime_voice: z.enum(['alloy', 'echo', 'fable', 'nova', 'onyx', 'shimmer']).optional().describe('OpenAI Realtime Voice'),
-                    openai_websites: z.array(z.string()).optional().describe('OpenAI Websites')
+                    openai_realtime_voice: z.string().optional().describe("OpenAI Realtime Voice to used from these options: " + ['alloy', 'echo', 'fable', 'nova', 'onyx', 'shimmer'].join(', ')),
+
+                    // openai_websites: z.array(z.string()).optional().describe('OpenAI Websites')
                 })
             },
             callback: async (args, c) => {
@@ -162,8 +163,8 @@ export function getTools() {
                     welcome_message: z.string().optional().describe('Welcome message'),
                     prompt: z.string().optional().describe('Instructions/Prompt'),
                     active: z.boolean().optional().describe('Whether assistant is active'),
-                    assistant_type: z.enum(['Text Only', 'Voice Only', 'Text & Voice', 'Voice & Text']).optional(),
-                    ai_platform: z.enum(['openai', 'gemini', 'openrouter', 'deepseek']).optional(),
+                    assistant_type: z.string().optional().describe("Assistant type from these options" + ['Text Only', 'Voice Only', 'Text & Voice', 'Voice & Text'].join(', ')),
+                    ai_platform: z.string().optional().describe("AI Platform to used from these options: " + ['openai', 'gemini', 'openrouter', 'deepseek'].join(', ')),
                     openai_model: z.string().optional().describe('AI Model'),
                     openai_temperature: z.number().optional().describe('AI Temperature (0-2)'),
                     booking_bot: z.boolean().optional().describe('Is booking bot'),

@@ -70,102 +70,102 @@ export function getTools() {
                 }
             }
         },
-        {
-            name: 'update_user_settings',
-            config: {
-                title: 'Update User Settings',
-                description: 'Update user preferences and settings',
-                inputSchema: z.object({
-                    notifications_enabled: z.boolean().optional().describe('Enable notifications'),
-                    email_notifications: z.boolean().optional().describe('Email notifications'),
-                    timezone: z.string().optional().describe('Timezone (e.g., America/New_York)'),
-                    language: z.string().optional().describe('Language preference'),
-                    theme: z.enum(['light', 'dark', 'auto']).optional().describe('UI theme'),
-                    assistant_limit: z.number().optional().describe('Maximum assistants allowed'),
-                    call_recording_enabled: z.boolean().optional().describe('Enable call recordings')
-                })
-            },
-            callback: async (args, c) => {
-                try {
-                    // Make actual API call to backend to update user settings
-                    const bearerToken = c.requestInfo.headers;
-                    const updateResult = await backend.users.updateUser(args, bearerToken);
+        // {
+        //     name: 'update_user_settings',
+        //     config: {
+        //         title: 'Update User Settings',
+        //         description: 'Update user preferences and settings',
+        //         inputSchema: z.object({
+        //             notifications_enabled: z.boolean().optional().describe('Enable notifications'),
+        //             email_notifications: z.boolean().optional().describe('Email notifications'),
+        //             timezone: z.string().optional().describe('Timezone (e.g., America/New_York)'),
+        //             language: z.string().optional().describe('Language preference'),
+        //             theme: z.enum(['light', 'dark', 'auto']).optional().describe('UI theme'),
+        //             assistant_limit: z.number().optional().describe('Maximum assistants allowed'),
+        //             call_recording_enabled: z.boolean().optional().describe('Enable call recordings')
+        //         })
+        //     },
+        //     callback: async (args, c) => {
+        //         try {
+        //             // Make actual API call to backend to update user settings
+        //             const bearerToken = c.requestInfo.headers;
+        //             const updateResult = await backend.users.updateUser(args, bearerToken);
                     
-                    return {
-                        structuredContent: updateResult,
-                        content: [
-                            {
-                                type: "text",
-                                text: `User settings updated successfully.`,
-                            },
-                        ],
-                    };
-                } catch (error) {
-                    console.error("Error in update_user_settings:", error);
-                    return {
-                        content: [{ type: "text", text: `Error updating user settings: ${error.message}` }],
-                        isError: true
-                    };
-                }
-            }
-        },
-        {
-            name: 'get_user_settings',
-            config: {
-                title: 'Get User Settings',
-                description: 'Get current user preferences and settings',
-                inputSchema: z.object({})
-            },
-            callback: async (args, c) => {
-                try {
-                    // Make actual API call to backend to get user settings
-                    const bearerToken = c.requestInfo.headers;
-                    const settings = await backend.users.getUserSettings(bearerToken);
+        //             return {
+        //                 structuredContent: updateResult,
+        //                 content: [
+        //                     {
+        //                         type: "text",
+        //                         text: `User settings updated successfully.`,
+        //                     },
+        //                 ],
+        //             };
+        //         } catch (error) {
+        //             console.error("Error in update_user_settings:", error);
+        //             return {
+        //                 content: [{ type: "text", text: `Error updating user settings: ${error.message}` }],
+        //                 isError: true
+        //             };
+        //         }
+        //     }
+        // },
+        // {
+        //     name: 'get_user_settings',
+        //     config: {
+        //         title: 'Get User Settings',
+        //         description: 'Get current user preferences and settings',
+        //         inputSchema: z.object({})
+        //     },
+        //     callback: async (args, c) => {
+        //         try {
+        //             // Make actual API call to backend to get user settings
+        //             const bearerToken = c.requestInfo.headers;
+        //             const settings = await backend.users.getUserSettings(bearerToken);
                     
-                    let settingsSummary = `User Settings:\n`;
+        //             let settingsSummary = `User Settings:\n`;
                     
-                    if (settings) {
-                        if (settings.notifications_enabled !== undefined) {
-                            settingsSummary += `Notifications: ${settings.notifications_enabled ? 'Enabled' : 'Disabled'}\n`;
-                        }
-                        if (settings.email_notifications !== undefined) {
-                            settingsSummary += `Email Notifications: ${settings.email_notifications ? 'Enabled' : 'Disabled'}\n`;
-                        }
-                        if (settings.timezone) {
-                            settingsSummary += `Timezone: ${settings.timezone}\n`;
-                        }
-                        if (settings.language) {
-                            settingsSummary += `Language: ${settings.language}\n`;
-                        }
-                        if (settings.theme) {
-                            settingsSummary += `Theme: ${settings.theme}\n`;
-                        }
-                        if (settings.assistant_limit !== undefined) {
-                            settingsSummary += `Assistant Limit: ${settings.assistant_limit}\n`;
-                        }
-                        if (settings.call_recording_enabled !== undefined) {
-                            settingsSummary += `Call Recording: ${settings.call_recording_enabled ? 'Enabled' : 'Disabled'}\n`;
-                        }
-                    }
+        //             if (settings) {
+        //                 if (settings.notifications_enabled !== undefined) {
+        //                     settingsSummary += `Notifications: ${settings.notifications_enabled ? 'Enabled' : 'Disabled'}\n`;
+        //                 }
+        //                 if (settings.email_notifications !== undefined) {
+        //                     settingsSummary += `Email Notifications: ${settings.email_notifications ? 'Enabled' : 'Disabled'}\n`;
+        //                 }
+        //                 if (settings.timezone) {
+        //                     settingsSummary += `Timezone: ${settings.timezone}\n`;
+        //                 }
+        //                 if (settings.language) {
+        //                     settingsSummary += `Language: ${settings.language}\n`;
+        //                 }
+        //                 if (settings.theme) {
+        //                     settingsSummary += `Theme: ${settings.theme}\n`;
+        //                 }
+        //                 if (settings.assistant_limit !== undefined) {
+        //                     settingsSummary += `Assistant Limit: ${settings.assistant_limit}\n`;
+        //                 }
+        //                 if (settings.call_recording_enabled !== undefined) {
+        //                     settingsSummary += `Call Recording: ${settings.call_recording_enabled ? 'Enabled' : 'Disabled'}\n`;
+        //                 }
+        //             }
                     
-                    return {
-                        structuredContent: settings,
-                        content: [
-                            {
-                                type: "text",
-                                text: settingsSummary,
-                            },
-                        ],
-                    };
-                } catch (error) {
-                    console.error("Error in get_user_settings:", error);
-                    return {
-                        content: [{ type: "text", text: `Error retrieving user settings: ${error.message}` }],
-                        isError: true
-                    };
-                }
-            }
-        },
+        //             return {
+        //                 structuredContent: settings,
+        //                 content: [
+        //                     {
+        //                         type: "text",
+        //                         text: settingsSummary,
+        //                     },
+        //                 ],
+        //             };
+        //         } catch (error) {
+        //             console.error("Error in get_user_settings:", error);
+        //             return {
+        //                 content: [{ type: "text", text: `Error retrieving user settings: ${error.message}` }],
+        //                 isError: true
+        //             };
+        //         }
+        //     }
+        // },
         {
             name: 'get_user_token_balance',
             config: {
