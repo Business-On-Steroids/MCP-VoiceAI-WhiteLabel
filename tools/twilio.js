@@ -12,7 +12,7 @@ export function getTools() {
                 inputSchema: z.object({
                     // assistant_id: z.string().describe('Assistant ID'),
                     phone_number: z.string().describe('Phone number to call'),
-                    contact_id: z.string().optional().describe('Contact ID (optional)')
+                    // contact_id: z.string().optional().describe('Contact ID (optional)')
                 })
             },
             callback: async (args, c) => {
