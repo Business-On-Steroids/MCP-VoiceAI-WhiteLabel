@@ -11,7 +11,7 @@ export function getTools() {
                 title: 'get_assistant',
                 description: 'Get basic information about a specific assistant',
                 inputSchema: z.object({
-                    assistant_id: z.string().describe('Assistant ID')
+                    // assistant_id: z.string().describe('Assistant ID')
                 })
             },
             callback: async (args, c) => {
@@ -53,7 +53,7 @@ export function getTools() {
                 title: 'get_one_assistant',
                 description: 'Get complete information about a specific assistant',
                 inputSchema: z.object({
-                    assistant_id: z.string().describe('Assistant ID')
+                    // assistant_id: z.string().describe('Assistant ID')
                 })
             },
             callback: async (args, c) => {
@@ -156,7 +156,7 @@ export function getTools() {
                 title: 'update_assistant',
                 description: 'Update an existing assistant',
                 inputSchema: z.object({
-                    assistant_id: z.string().describe('Assistant ID'),
+                    // assistant_id: z.string().describe('Assistant ID'),
                     title: z.string().optional().describe('Assistant name'),
                     apiKey: z.string().optional().describe('OpenAI API Key'),
                     welcome_message: z.string().optional().describe('Welcome message'),
@@ -205,7 +205,7 @@ export function getTools() {
                 title: 'delete_assistant',
                 description: 'Delete an assistant',
                 inputSchema: z.object({
-                    assistant_id: z.string().describe('Assistant ID')
+                    // assistant_id: z.string().describe('Assistant ID')
                 })
             },
             callback: async (args, c) => {
@@ -240,7 +240,7 @@ export function getTools() {
                 title: 'get_assistant_usage',
                 description: 'Get usage statistics for an assistant',
                 inputSchema: z.object({
-                    assistant_id: z.string().describe('Assistant ID')
+                    // assistant_id: z.string().describe('Assistant ID')
                 })
             },
             callback: async (args, c) => {

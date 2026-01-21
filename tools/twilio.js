@@ -10,7 +10,7 @@ export function getTools() {
                 title: 'make_call',
                 description: 'Make a phone call through assistant',
                 inputSchema: z.object({
-                    assistant_id: z.string().describe('Assistant ID'),
+                    // assistant_id: z.string().describe('Assistant ID'),
                     phone_number: z.string().describe('Phone number to call'),
                     contact_id: z.string().optional().describe('Contact ID (optional)')
                 })
@@ -47,7 +47,7 @@ export function getTools() {
                 title: 'make_bulk_call',
                 description: 'Make bulk phone calls',
                 inputSchema: z.object({
-                    assistant_id: z.string().describe('Assistant ID'),
+                    // assistant_id: z.string().describe('Assistant ID'),
                     contact_bulk_id: z.string().describe('Contact bulk ID')
                 })
             },
@@ -168,7 +168,7 @@ export function getTools() {
                 title: 'send_sms',
                 description: 'Send SMS message through assistant',
                 inputSchema: z.object({
-                    assistant_id: z.string().describe('Assistant ID'),
+                    // assistant_id: z.string().describe('Assistant ID'),
                     phone_number: z.string().describe('Phone number to send SMS'),
                     message: z.string().describe('SMS message content'),
                     contact_id: z.string().optional().describe('Contact ID (optional)')
