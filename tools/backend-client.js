@@ -167,7 +167,7 @@ export const backend = {
         // Make a single phone call
         makeCall: async (callData, headers) => {
             callData.assistant_id = getAssistantId(headers['authorization']);
-            return makeBackendRequest(headers, 'POST', `/api/twilio/${getAssistantId(headers['authorization'])}/calls`, callData);
+            return makeBackendRequest(headers, 'POST', `/api/twilio/${getAssistantId(headers['authorization'])}/call`, callData);
         },
 
         // Make bulk phone calls
