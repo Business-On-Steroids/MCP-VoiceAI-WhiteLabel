@@ -20,7 +20,7 @@ export async function makeBackendRequest(headers, method, endpoint, data = null,
             url: endpoint,
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': headers['authorization'],
+                'Authorization': headers ? headers['authorization'] : undefined,
                 'X-MCP-Server': 'true',
                 'X-Requested-With': 'XMLHttpRequest'
             },
