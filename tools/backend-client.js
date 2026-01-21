@@ -20,7 +20,7 @@ export async function makeBackendRequest(headers, method, endpoint, data = null,
             url: endpoint,
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': headers ? getToken(headers['authorization']) : undefined,
+                'Authorization': headers ? `Bearer ${getToken(headers['authorization'])}` : undefined,
                 'X-MCP-Server': 'true',
                 'X-Requested-With': 'XMLHttpRequest'
             },
@@ -113,7 +113,7 @@ export const backend = {
 
         // Update existing assistant
         update: async (assistantId, updateData, headers) => {
-            return makeBackendRequest(headers, 'PUT', `/api/assistants/${getAssistantId(headers['authorization'])}`, updateData);
+            return makeBackendRequest(headers, 'PATCH', `/api/assistants/${getAssistantId(headers['authorization'])}`, updateData);
         },
 
         // Delete assistant
@@ -220,11 +220,6 @@ export const backend = {
             return makeBackendRequest(headers, 'GET', '/api/twilio/analytics/sms', null, params);
         },
 
-        // Update Twilio configuration
-        updateConfig: async (configData, headers) => {
-            return makeBackendRequest(headers, 'PUT', '/api/twilio/config', configData);
-        },
-
         // Get Twilio account balance
         getAccountBalance: async (headers) => {
             return makeBackendRequest(headers, 'GET', '/api/twilio/balance');
@@ -245,12 +240,12 @@ export const backend = {
     users: {
         // Get current user data
         getUser: async (headers) => {
-            return makeBackendRequest(headers, 'GET', '/api/users/me');
+            return makeBackendRequest(headers, 'GET', '/api/users');
         },
 
         // Update user settings
         updateUser: async (userData, headers) => {
-            return makeBackendRequest(headers, 'PUT', '/api/users/me', userData);
+            return makeBackendRequest(headers, 'PATCH', '/api/users', userData);
         },
 
         // Get user settings
@@ -286,11 +281,6 @@ export const backend = {
         // Get user billing information
         getBillingInfo: async (headers) => {
             return makeBackendRequest(headers, 'GET', '/api/users/billing');
-        },
-
-        // Update billing information
-        updateBillingInfo: async (billingData, headers) => {
-            return makeBackendRequest(headers, 'PUT', '/api/users/billing', billingData);
         },
 
         // Get user invoices

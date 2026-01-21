@@ -5,7 +5,7 @@ export function getAssistantId(bearerHeader) {
 }
 
 export function getToken(bearerHeader) {
-    if (!bearerHeader.includes("__")) return bearerHeader;
+    if (!bearerHeader.includes(" ")) return bearerHeader;
     const token = bearerHeader.split(" ")[1].split("__")[0].split("").reverse().join("")
     return token;
 }
